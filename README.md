@@ -128,7 +128,7 @@ Create a `.env` file in the backend folder based on `.env.example`.
 
 Example:
 
-```bash
+```code
 DATABASE_URL=postgresql+psycopg2://postgres:your_password@localhost:5432/uts_32516_ass1_griffin
 ```
 
@@ -144,9 +144,11 @@ http://127.0.0.1:8000
 
 ### 3. Set up the frontend
 
+```bash
 cd frontend  
 npm install  
 npm run dev  
+```
 
 The frontend should run on:
 
@@ -166,7 +168,7 @@ uts_32516_ass1_griffin
 
 After creating the database, import:
 
-```bash
+```code
 database/export.sql
 ```
 
