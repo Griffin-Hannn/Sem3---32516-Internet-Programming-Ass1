@@ -2,9 +2,10 @@ from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException, Depends, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from sqlmodel import Session
+from sqlmodel import Session, SQLModel
 
-from database import get_session
+from database import get_session, engine
+import models
 from models import Expense
 from crud import (
     create_expense,
@@ -12,6 +13,8 @@ from crud import (
     update_expense,
     delete_expense,
 )
+
+SQLModel.metadata.create_all(engine)
 
 app = FastAPI(title="Expense Tracker API")
 

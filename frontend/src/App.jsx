@@ -189,9 +189,10 @@ function App() {
         </header>
 
         <section className="card">
-          <h2>{editingId ? "Edit Expense" : "Add Expense"}</h2>
+            <h2>{editingId ? "Edit Expense" : "Add Expense"}</h2>
 
-          <form className="expense-form" onSubmit={handleSubmit}>
+            <form className="expense-form" onSubmit={handleSubmit}>
+
             <div className="form-row">
               <label>Title</label>
               <input
@@ -268,6 +269,8 @@ function App() {
                 </button>
               )}
             </div>
+
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
           </form>
         </section>
 
@@ -296,7 +299,7 @@ function App() {
             </div>
           </div>
 
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          
           {loading && <p className="status-message">Loading...</p>}
 
           {!loading && expenses.length === 0 && (

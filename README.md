@@ -63,6 +63,7 @@ Users can:
 
 ## Folder Structure
 
+```txt
 assignment1/
 │
 ├── backend/
@@ -88,6 +89,7 @@ assignment1/
 │
 ├── README.md
 └── .gitignore
+```
 
 ### Structure Notes
 
