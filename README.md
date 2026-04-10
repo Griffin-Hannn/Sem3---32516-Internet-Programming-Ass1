@@ -4,7 +4,7 @@
 
 Expense Tracker is a single-page web application that helps users record and review their daily spending in a clear and structured way. The app allows users to add, edit, delete, and browse expense items, while also providing simple summaries by category and month.
 
-This project was built for Assignment 1 in 32516 Internet Programming. The goal was to design a dynamic database-driven web interface using HTML, CSS, JavaScript, and a backend connected to a database.
+This project was developed as part of Assignment 1 for 32516 Internet Programming. The goal was to design a dynamic database-driven web interface using HTML, CSS, JavaScript, and a backend connected to a database.
 
 ---
 
@@ -108,31 +108,39 @@ assignment1/
 
 ### 1. Clone the repository
 
+```bash
 git clone <your-github-repo-url>  
-cd assignment1  
+cd assignment1
+``` 
 
 ### 2. Set up the backend
 
-cd backend  
-python -m venv .venv  
-source .venv/bin/activate  
-pip install -r requirements.txt  
+Make sure PostgreSQL is running before starting the backend.
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 Create a `.env` file in the backend folder based on `.env.example`.
 
 Example:
 
+```bash
 DATABASE_URL=postgresql+psycopg2://postgres:your_password@localhost:5432/uts_32516_ass1_griffin
+```
 
 Start the backend server:
 
-uvicorn main:app --reload  
+```bash
+uvicorn main:app --reload
+```
 
 The backend should run on:
 
 http://127.0.0.1:8000  
-
----
 
 ### 3. Set up the frontend
 
@@ -158,7 +166,9 @@ uts_32516_ass1_griffin
 
 After creating the database, import:
 
+```bash
 database/export.sql
+```
 
 This file contains the database structure and sample data used for the project.
 
