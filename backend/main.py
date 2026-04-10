@@ -5,10 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, SQLModel
 
 from database import get_session, engine
-import models
 from models import Expense
 from crud import (
     create_expense,
+    get_expense, # not used, but just in case
     get_expenses,
     update_expense,
     delete_expense,
@@ -19,28 +19,23 @@ SQLModel.metadata.create_all(engine)
 app = FastAPI(title="Expense Tracker API")
 
 origins = [
-    "http://localhost:3000",
+    "http://localhost:3000", # React
     "http://127.0.0.1:3000",
-    "http://localhost:5173",
+    "http://localhost:5173", # Vite
     "http://127.0.0.1:5173",
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
+    allow_credentials=True, # not used but kept as a common and harmless development configuration
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
 @app.get("/expenses", response_model=List[Expense])
-async def get_all_expenses(
-    category: Optional[str] = None,
-    skip: int = 0,
-    limit: int = 100,
-    db: Session = Depends(get_session)
-):
+async def get_all_expenses(category: Optional[str] = None, skip: int = 0, limit: int = 30, db: Session = Depends(get_session)):
     """Fetch all expense items, with optional category filtering."""
     return await get_expenses(db, category=category, skip=skip, limit=limit)
 
@@ -55,12 +50,8 @@ async def add_expense(expense: Expense, db: Session = Depends(get_session)):
 
 
 @app.put("/expenses/{expense_id}", response_model=Expense)
-async def edit_expense(
-    expense_id: str,
-    updated_expense: Expense,
-    db: Session = Depends(get_session)
-):
-    """Update an existing expense item."""
+async def edit_expense(expense_id: str, updated_expense: Expense, db: Session = Depends(get_session)):
+    """Update an expense item."""
     db_expense = await update_expense(db, expense_id, updated_expense)
 
     if not db_expense:

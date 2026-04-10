@@ -6,8 +6,6 @@ Expense Tracker is a single-page web application that helps users record and rev
 
 This project was developed as part of Assignment 1 for 32516 Internet Programming. The goal was to design a dynamic database-driven web interface using HTML, CSS, JavaScript, and a backend connected to a database.
 
----
-
 ## Problem It Solves
 
 Many people keep track of spending in scattered notes, screenshots, or memory, which makes it difficult to review where their money goes. This application solves that problem by providing a simple and interactive expense logbook.
@@ -21,7 +19,6 @@ Users can:
 - review total spending by category
 - review monthly spending trends in a simple way
 
----
 
 ## Tech Stack
 
@@ -43,7 +40,6 @@ Users can:
 - Uvicorn
 - Git / GitHub
 
----
 
 ## Features
 
@@ -59,7 +55,6 @@ Users can:
 - Loading and error feedback
 - Responsive layout for smaller screens
 
----
 
 ## Folder Structure
 
@@ -102,7 +97,6 @@ assignment1/
 - frontend/src/styles.css contains the interface styling.
 - database/export.sql contains the exported database structure and sample data for submission.
 
----
 
 ## How to Run the Project
 
@@ -128,7 +122,7 @@ Create a `.env` file in the backend folder based on `.env.example`.
 
 Example:
 
-```code
+```txt
 DATABASE_URL=postgresql+psycopg2://postgres:your_password@localhost:5432/uts_32516_ass1_griffin
 ```
 
@@ -154,7 +148,6 @@ The frontend should run on:
 
 http://127.0.0.1:5173  
 
----
 
 ## Database Setup
 
@@ -168,7 +161,7 @@ uts_32516_ass1_griffin
 
 After creating the database, import:
 
-```code
+```txt
 database/export.sql
 ```
 
@@ -178,7 +171,6 @@ This file contains the database structure and sample data used for the project.
 
 If the database already exists and the backend is connected correctly, the app can create the table automatically when it starts.
 
----
 
 ## Business Logic Design
 
@@ -194,7 +186,6 @@ The workflow is:
 
 This makes the app more realistic than a very simple CRUD demo, while still keeping the logic manageable and clear.
 
----
 
 ## Challenges Encountered
 
@@ -206,7 +197,6 @@ I also ran into issues with request flow and frontend timing. In some earlier ex
 
 Finally, I had to be careful about keeping the project structure clean without overengineering it. I separated the backend into database, model, CRUD, and route files, but avoided adding unnecessary abstraction layers.
 
----
 
 ## Future Improvements
 
@@ -218,7 +208,6 @@ If I continued this project further, I would consider:
 - supporting more categories or custom categories  
 - improving validation messages and form guidance  
 
----
 
 ## Assignment Requirements Checklist
 
@@ -230,7 +219,6 @@ This project addresses the core assignment requirements by:
 - offering a project scope comparable to the examples in the brief  
 - including source code, database export, and documentation  
 
----
 
 ## Author
 
