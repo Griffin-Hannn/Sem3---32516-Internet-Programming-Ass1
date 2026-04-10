@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getExpenses,
   createExpense,
@@ -24,6 +24,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const titleInputRef = useRef(null);
+
   const categories = ["Food", "Transport", "Study", "Entertainment", "Other"];
 
   const fetchAllExpenses = async (category = "") => {
@@ -34,7 +36,7 @@ function App() {
       const data = await getExpenses(category);
       setExpenses(data);
     } catch (error) {
-      setErrorMessage("Failed to load expenses.");
+      setErrorMessage("Error loading expenses");
     } finally {
       setLoading(false);
     }
@@ -44,17 +46,37 @@ function App() {
     fetchAllExpenses(filterCategory);
   }, [filterCategory]);
 
+  useEffect(() => {
+    if (titleInputRef.current) {
+      titleInputRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (editingId && titleInputRef.current) {
+      titleInputRef.current.focus();
+    }
+  }, [editingId]);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
   };
 
   const resetForm = () => {
     setFormData(initialFormData);
     setEditingId(null);
+    setErrorMessage("");
+
+    if (titleInputRef.current) {
+      titleInputRef.current.focus();
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -62,17 +84,17 @@ function App() {
     setErrorMessage("");
 
     if (!formData.title.trim()) {
-      setErrorMessage("Title is required.");
+      setErrorMessage("Title is required");
       return;
     }
 
     if (!formData.amount || Number(formData.amount) <= 0) {
-      setErrorMessage("Amount must be greater than 0.");
+      setErrorMessage("Amount must be greater than 0");
       return;
     }
 
     if (!formData.date) {
-      setErrorMessage("Date is required.");
+      setErrorMessage("Date is required");
       return;
     }
 
@@ -88,6 +110,7 @@ function App() {
         await updateExpense(editingId, expensePayload);
       } else {
         const newId = new Date().toISOString();
+
         await createExpense({
           ...expensePayload,
           id: newId,
@@ -97,7 +120,7 @@ function App() {
       await fetchAllExpenses(filterCategory);
       resetForm();
     } catch (error) {
-      setErrorMessage("Failed to save expense.");
+      setErrorMessage("Error saving expense");
     } finally {
       setLoading(false);
     }
@@ -136,49 +159,41 @@ function App() {
         resetForm();
       }
     } catch (error) {
-      setErrorMessage("Failed to delete expense.");
+      setErrorMessage("Error deleting expense");
     } finally {
       setLoading(false);
     }
   };
 
-  const totalAmount = useMemo(() => {
-    return expenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
-  }, [expenses]);
+  const totalAmount = expenses.reduce((sum, expense) => {
+    return sum + Number(expense.amount);
+  }, 0);
 
-  const totalsByCategory = useMemo(() => {
-    const result = {};
+  const totalsByCategory = {};
 
-    expenses.forEach((expense) => {
-      const category = expense.category;
-      const amount = Number(expense.amount);
+  expenses.forEach((expense) => {
+    const category = expense.category;
+    const amount = Number(expense.amount);
 
-      if (!result[category]) {
-        result[category] = 0;
-      }
+    if (!totalsByCategory[category]) {
+      totalsByCategory[category] = 0;
+    }
 
-      result[category] += amount;
-    });
+    totalsByCategory[category] += amount;
+  });
 
-    return result;
-  }, [expenses]);
+  const monthlyTrend = {};
 
-  const monthlyTrend = useMemo(() => {
-    const result = {};
+  expenses.forEach((expense) => {
+    const monthKey = expense.date.slice(0, 7);
+    const amount = Number(expense.amount);
 
-    expenses.forEach((expense) => {
-      const monthKey = expense.date.slice(0, 7);
-      const amount = Number(expense.amount);
+    if (!monthlyTrend[monthKey]) {
+      monthlyTrend[monthKey] = 0;
+    }
 
-      if (!result[monthKey]) {
-        result[monthKey] = 0;
-      }
-
-      result[monthKey] += amount;
-    });
-
-    return result;
-  }, [expenses]);
+    monthlyTrend[monthKey] += amount;
+  });
 
   return (
     <div className="page">
@@ -189,13 +204,14 @@ function App() {
         </header>
 
         <section className="card">
-            <h2>{editingId ? "Edit Expense" : "Add Expense"}</h2>
+          <h2>{editingId ? "Edit Expense" : "Add Expense"}</h2>
 
-            <form className="expense-form" onSubmit={handleSubmit}>
-
+          <form className="expense-form" onSubmit={handleSubmit}>
             <div className="form-row">
-              <label>Title</label>
+              <label htmlFor="title">Title</label>
               <input
+                ref={titleInputRef}
+                id="title"
                 type="text"
                 name="title"
                 value={formData.title}
@@ -205,8 +221,9 @@ function App() {
             </div>
 
             <div className="form-row">
-              <label>Category</label>
+              <label htmlFor="category">Category</label>
               <select
+                id="category"
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
@@ -220,8 +237,9 @@ function App() {
             </div>
 
             <div className="form-row">
-              <label>Amount</label>
+              <label htmlFor="amount">Amount</label>
               <input
+                id="amount"
                 type="number"
                 name="amount"
                 value={formData.amount}
@@ -233,8 +251,9 @@ function App() {
             </div>
 
             <div className="form-row">
-              <label>Date</label>
+              <label htmlFor="date">Date</label>
               <input
+                id="date"
                 type="date"
                 name="date"
                 value={formData.date}
@@ -243,8 +262,9 @@ function App() {
             </div>
 
             <div className="form-row">
-              <label>Description</label>
+              <label htmlFor="description">Description</label>
               <textarea
+                id="description"
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
@@ -278,14 +298,13 @@ function App() {
           <div className="filter-row">
             <div>
               <h2>Expenses</h2>
-              <p className="subtle-text">
-                Showing latest expenses first.
-              </p>
+              <p className="subtle-text">Showing latest expenses first.</p>
             </div>
 
             <div className="filter-control">
-              <label>Filter by Category</label>
+              <label htmlFor="category-filter">Filter by Category</label>
               <select
+                id="category-filter"
                 value={filterCategory}
                 onChange={(event) => setFilterCategory(event.target.value)}
               >
@@ -299,7 +318,6 @@ function App() {
             </div>
           </div>
 
-          
           {loading && <p className="status-message">Loading...</p>}
 
           {!loading && expenses.length === 0 && (
@@ -313,7 +331,9 @@ function App() {
                   <div className="expense-main">
                     <div className="expense-top-line">
                       <h3>{expense.title}</h3>
-                      <span className="amount">${Number(expense.amount).toFixed(2)}</span>
+                      <span className="amount">
+                        ${Number(expense.amount).toFixed(2)}
+                      </span>
                     </div>
 
                     <div className="expense-meta">
@@ -335,6 +355,7 @@ function App() {
                     >
                       Edit
                     </button>
+
                     <button
                       type="button"
                       className="danger-button"

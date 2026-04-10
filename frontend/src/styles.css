@@ -198,7 +198,8 @@ button[type="submit"]:hover:not(:disabled) {
 .expense-item {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 12px;
   padding: 16px;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -207,6 +208,7 @@ button[type="submit"]:hover:not(:disabled) {
 
 .expense-main {
   flex: 1;
+  min-width: 0;
 }
 
 .expense-top-line {
@@ -225,12 +227,14 @@ button[type="submit"]:hover:not(:disabled) {
 .amount {
   font-weight: 700;
   color: #111827;
+  white-space: nowrap;
 }
 
 .expense-meta {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  align-items: center;
   margin-bottom: 8px;
   color: #4b5563;
   font-size: 0.95rem;
@@ -253,22 +257,26 @@ button[type="submit"]:hover:not(:disabled) {
 }
 
 .expense-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 88px;
+  display: grid;
+  gap: 10px;
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.expense-actions button {
+  width: 100%;
 }
 
 .summary-total {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   font-size: 1.05rem;
 }
 
 .summary-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 160px;
+  grid-template-columns: 1fr;
+  gap: 28px;
 }
 
 .summary-list {
@@ -300,9 +308,13 @@ button[type="submit"]:hover:not(:disabled) {
     flex-direction: column;
   }
 
+  .expense-top-line {
+    align-items: flex-start;
+  }
+
   .expense-actions {
-    flex-direction: row;
-    min-width: auto;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
   }
 
   .summary-grid {

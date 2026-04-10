@@ -8,10 +8,11 @@ export async function getExpenses(category = "") {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("Failed to fetch expenses.");
+    throw new Error("Error fetching expenses");
   }
 
-  return response.json();
+  const data = await response.json();
+  return data;
 }
 
 export async function createExpense(expenseData) {
@@ -24,10 +25,11 @@ export async function createExpense(expenseData) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create expense.");
+    throw new Error("Error creating expense");
   }
 
-  return response.json();
+  const data = await response.json();
+  return data;
 }
 
 export async function updateExpense(expenseId, expenseData) {
@@ -40,10 +42,11 @@ export async function updateExpense(expenseId, expenseData) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to update expense.");
+    throw new Error("Error updating expense");
   }
 
-  return response.json();
+  const data = await response.json();
+  return data;
 }
 
 export async function deleteExpense(expenseId) {
@@ -52,7 +55,7 @@ export async function deleteExpense(expenseId) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to delete expense.");
+    throw new Error("Error deleting expense");
   }
 
   return true;
