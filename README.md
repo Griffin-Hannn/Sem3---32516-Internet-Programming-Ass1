@@ -89,8 +89,8 @@ assignment1/
 ## How to Run the Project
 ### 1. Clone the repository
 ```bash
-    git clone <your-github-repo-url>
-    cd assignment1
+    git clone https://github.com/Griffin-Hannn/Sem3---32516-Internet-Programming-Ass1.git
+    cd Sem3---32516-Internet-Programming-Ass1
 ```
 ### 2. Set up the backend
 Make sure PostgreSQL is running before starting the backend.
@@ -112,7 +112,7 @@ Example:
 
 Start the backend server:
 
-```txt
+```bash
     uvicorn main:app --reload
 ```
 
